@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2" style="border:1px solid green;">
+			<img class="rounded-circle" style="border:1px solid black;" width="100" height="100" src="{{ asset('images/astronaut-profile.png')}}">
+		</div>
+		<div class="col-md-4" style="border:1px solid green;">
+			<p>Welcome back {{ user_data['name'] }}</p>
+			<p>Your alias is {{ user_data['alias'] }}</p>
+			<p>And you joined us  {{ user_data['sign_date'] }}</p>
+		</div>
+		<div class="col-md-6" style="border:1px solid green;">
+			<p>You made so far {{ story_count }} posts</p>
+			<p>And commented on {{ comment_count }} posts</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

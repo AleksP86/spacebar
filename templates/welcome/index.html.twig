@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+	<div class="col-md-9" style="border:1px solid red;float:left;">
+    	Article place
+    	{% for article in article_list %}
+            <a href={{ path('post', {slug: article.id}) }} style="text-decoration: none;color: inherit;">
+    		<div style="border:1px solid black;">
+    			<img class="nav-profile-img rounded-circle" src="{{ asset('images/astronaut-profile.png') }}">
+                <p>{{article.name}}</p>
+                <p>{{article.text}}</p>
+                <p>{{article.message}}</p>
+    			
+    		</div>
+            </a>
+    	{% endfor %}
+    </div>
+    <div class="col-md-3" style="border:1px solid red; float:right;">
+        <p>Sidebar</p>
+    </div>
+{% endblock %}

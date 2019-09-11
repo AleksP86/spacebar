@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LoginController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-6" align="right">
+		<button id="log_b">Login</button>
+		</div>
+		<div class="col-md-6" align="left">
+		<button id="reg_b">Register</button>
+		</div>
+	</div>
+</div>
+<div id="log_div" class="example-wrapper" align="center" style="display:none">
+	<form>
+		<div class="form-group">
+		<label>Username</label><br/>
+		<input class="form-controll" type="text" id="username"/><br>
+		</div>
+		<div class="form-group">
+		<label>Password</label><br/>
+		<input class="form-controll" type="password" id="userpass"/><br>
+		</div>
+		<button id="loginSub">Submit</button>
+		<br>
+		<p id="message_place"><br/></p>
+	</form>
+</div>
+<div id="reg_div" class="example-wrapper" align="center" style="display:none">
+	<form>
+		<div class="form-group">
+		<label>Username</label><br/>
+		<input class="form-controll" type="text" id="username_r"/><br>
+		</div>
+		<div class="form-group">
+		<label>Password</label><br/>
+		<input class="form-controll" type="password" id="userpass_r"/><br>
+		</div>
+		<button id="registerSub">Register</button>
+		<br>
+		<p id="message_place_r"><br/></p>
+	</form>
+</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('js/login.js') }}"></script>
+{% endblock %}
