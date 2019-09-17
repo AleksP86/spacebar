@@ -52,4 +52,67 @@ class ArticleRepository extends ServiceEntityRepository
         $stmt->execute();
         return $stmt->fetch();
     }
+
+    public function FirstPageArticles()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT *
+            FROM article a";
+        /*$sql = "
+            SELECT count(id) as 'stories', a.*
+            FROM article a";*/
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function CountArticles()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+            SELECT count(id) as 'tot'
+            FROM article a";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    public function GetArticles($fid, $lid, $perPage, $dir)
+    {
+        if($dir==null)
+        {
+            //first load
+            $conn = $this->getEntityManager()->getConnection();
+            $sql = "SELECT *
+                FROM article a LIMIT ".$perPage;
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+        elseif($dir=='inc')
+        {
+            //next page set
+            $conn = $this->getEntityManager()->getConnection();
+            $sql = "SELECT *
+                FROM article a
+                WHERE id>".$lid."
+                LIMIT ".$perPage;
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+        elseif($dir=="desc")
+        {
+            //prevoius page set
+            $conn = $this->getEntityManager()->getConnection();
+            $sql = "SELECT *
+                FROM article a
+                WHERE id<".$fid."
+                ORDER BY id DESC
+                LIMIT ".$perPage;
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+    }
 }

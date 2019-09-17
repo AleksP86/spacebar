@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 
+    {#
 	<div class="col-md-9" style="border:1px solid red;float:left;">
     	Article place
     	{% for article in article_list %}
@@ -15,7 +16,28 @@
             </a>
     	{% endfor %}
     </div>
+    #}
     <div class="col-md-3" style="border:1px solid red; float:right;">
         <p>Sidebar</p>
     </div>
+
+    <div id="paged_articles" class="col-md-9" style="border:1px solid red;float:left;">
+        Pages
+    </div>
+    <div id="paged_ids" class="col-md-9" style="border:1px solid red;float:left;" align="center">
+        <table>
+            <tr>
+                <td>
+                <table id="nav_num"></table>
+                </td>
+                <td>
+                <select id="per_page_s"></select>
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/pagination.js') }}"></script>
 {% endblock %}

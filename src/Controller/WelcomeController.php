@@ -10,6 +10,7 @@ use App\Entity\Article;
 //use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class WelcomeController extends AbstractController
 {
@@ -119,5 +120,31 @@ class WelcomeController extends AbstractController
 
         //dump($session->get('logged_user_id') );
         return $this->render('welcome/index.html.twig',['article_list'=>$article_list, 'logged_user'=>$this->session->get('logged_user')]);
+    }
+
+    /**
+    * @Route("/loadFirstPage", name="loadFirstPage", methods="POST")
+    */
+    public function FirstPage()
+    {
+        //$articles = $this->getDoctrine()->getRepository(Article::class)->FirstPageArticles();
+        $count = $this->getDoctrine()->getRepository(Article::class)->CountArticles();
+        
+        return new JsonResponse(['total'=>$count['tot']/*, 'data'=>$articles*/]);
+    }
+
+    /**
+    * @Route("/loadPage", name="loadPage", methods="POST")
+    */
+    public function LoadPage()
+    {
+        //dump($_POST);
+        $articles = $this->getDoctrine()->getRepository(Article::class)->GetArticles($_POST['fid'], $_POST['lid'], $_POST['perPage'], $_POST['dir']);
+
+        //return new JsonResponse($_POST);
+        //$articles = $this->getDoctrine()->getRepository(Article::class)->FirstPageArticles();
+        //$count = $this->getDoctrine()->getRepository(Article::class)->CountArticles();
+        
+        return new JsonResponse(['articles'=>$articles]);
     }
 }
