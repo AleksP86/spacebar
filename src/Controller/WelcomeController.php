@@ -23,6 +23,9 @@ class WelcomeController extends AbstractController
      */
     public function index()
     {
+        return $this->render('welcome/index.html.twig',['logged_user'=>$this->session->get('logged_user')]);
+
+        /*
     	$articles = $this->getDoctrine()->getRepository(Article::class)->getAllStories();
 
     	$article_list=array();
@@ -120,6 +123,7 @@ class WelcomeController extends AbstractController
 
         //dump($session->get('logged_user_id') );
         return $this->render('welcome/index.html.twig',['article_list'=>$article_list, 'logged_user'=>$this->session->get('logged_user')]);
+        */
     }
 
     /**
@@ -127,10 +131,8 @@ class WelcomeController extends AbstractController
     */
     public function FirstPage()
     {
-        //$articles = $this->getDoctrine()->getRepository(Article::class)->FirstPageArticles();
         $count = $this->getDoctrine()->getRepository(Article::class)->CountArticles();
-        
-        return new JsonResponse(['total'=>$count['tot']/*, 'data'=>$articles*/]);
+        return new JsonResponse(['total'=>$count['tot']]);
     }
 
     /**
@@ -138,13 +140,91 @@ class WelcomeController extends AbstractController
     */
     public function LoadPage()
     {
-        //dump($_POST);
         $articles = $this->getDoctrine()->getRepository(Article::class)->GetArticles($_POST['fid'], $_POST['lid'], $_POST['perPage'], $_POST['dir']);
 
-        //return new JsonResponse($_POST);
-        //$articles = $this->getDoctrine()->getRepository(Article::class)->FirstPageArticles();
-        //$count = $this->getDoctrine()->getRepository(Article::class)->CountArticles();
-        
+        $i=0;
+        foreach($articles as $story)
+        {
+            $message='';//reset it
+            $t=$story['added_at'];
+            if($t==null)
+            {
+                $message="Unpublished";
+            }
+            else
+            {
+                $message=$this->CalculatePublicationDate($t);
+            }
+            $articles[$i]['message']=$message;
+            $i++;
+        }
+
         return new JsonResponse(['articles'=>$articles]);
+    }
+
+    public function CalculatePublicationDate($t)
+    {
+        $diff=date_diff(date_create($t),date_create());
+        if($diff->y>1)
+        {
+            $message='Article published '.$diff->y." years ago";
+        }
+        else if($diff->y==1)
+        {
+            $message='Article published '.$diff->y." year ago";
+        }
+        else
+        {
+            $message='';
+        }
+
+        if($message=='')
+        {
+            if($diff->m>1)
+            {
+                $message='Article published '.$diff->m." months ago";
+            }
+            else if($diff->m==1)
+            {
+                $message='Article published '.$diff->m." month ago";
+            }
+        }
+
+        if($message=='')
+        {
+            if($diff->d>1)
+            {
+                $message='Article published '.$diff->d." days ago";
+            }
+            elseif($diff->d==1)
+            {
+                $message='Article published '.$diff->d." day ago";
+            }
+        }
+
+        if($message=='')
+        {
+            if($diff->h>1)
+            {
+                $message='Article published '.$diff->h." hours ago";
+            }
+            elseif($diff->h==1)
+            {
+                $message='Article published '.$diff->h." hour ago";
+            }
+        }
+
+        if($message=='')
+        {
+            if($diff->i>1)
+            {
+                $message='Article published '.$diff->i." minutes ago";
+            }
+            else
+            {
+                $message="Article published few minutes ago";
+            }
+        }
+        return $message;
     }
 }

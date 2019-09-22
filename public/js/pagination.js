@@ -15,7 +15,12 @@ var current_page;
 
 $(document).ready(function()
 {
-	$("#per_page_s").html("<option value=1>1</option><option value=5>5</option><option value=10>10</option><option value=20>20</option>");
+	var sel_opt="<option value=2>2</option>";
+	//var sel_opt="<option value=1>1</option><option value=2>2</option>";
+	sel_opt+="<option value=5>5</option><option value=10>10</option>";
+	sel_opt+="<option value=20>20</option><option value=50>50</option>";
+
+	$("#per_page_s").html(sel_opt);
 	per_page=$("#per_page_s").val();
 	FirstLoad();
 
@@ -60,10 +65,18 @@ function DrawNav()
 	//console.log('We need '+menu_pages+' pages.');
 	$("#nav_num").html('');
 
-	if(menu_pages>1)
+	if(menu_pages==2)
 	{
 		//block 1 block 2 block next
-		var table = "<tr><td><button style=\"background-color:green\">1</button></td><td><button onclick=\"NextPage();\">2</button></td><td><button>></button></td></tr>";
+		var table = "<tr><td><button style=\"background-color:green\">1</button></td>";
+		table+="<td><button onclick=\"NextPage();\">2</button></td>";
+	}
+	else if(menu_pages>1)
+	{
+		//block 1 block 2 block next
+		var table = "<tr><td><button style=\"background-color:green\">1</button></td>";
+		table+="<td><button onclick=\"NextPage();\">2</button></td>";
+		table+="<td><button onclick=\"NextPage();\">></button></td></tr>";
 	}
 	else if(menu_pages==1)
 	{
@@ -98,7 +111,10 @@ function RequestPage()
 			for(let i = 0; i < data.articles.length; i++)
 			{
 				//console.log(data.articles[i]);
-				art_divs+="<a href='/post/"+ data.articles[i].id +"' style=\"text-decoration: none;color: inherit;\"><div style=\"border:1px solid black;\"><img class=\"nav-profile-img rounded-circle\" src=\"images/astronaut-profile.png\"><p>"+ data.articles[i].name +"</p><p>"+ data.articles[i].text +"</p><p>Message</p></div></a>";
+				art_divs+="<a href='/post/"+ data.articles[i].id +"' style=\"text-decoration: none;color: inherit;\">";
+				art_divs+="<div style=\"border:1px solid black;\">";
+				art_divs+="<img class=\"nav-profile-img rounded-circle\" src=\"images/astronaut-profile.png\">";
+				art_divs+="<p>"+ data.articles[i].name +"</p><p>"+ data.articles[i].text +"</p><p>"+data.articles[i].message+"</p></div></a>";
 			}
 			//console.log(art_divs);
 			//$('#paged_articles').html('');
@@ -145,7 +161,7 @@ function NextPage()
 	{
 		//there is more than 1 next page
 		table+="<td><button onclick=\"NextPage();\">"+(current_page+1)+"</button></td>";
-		table+="<td><button onclick=\"NextPage();\">"+(current_page+1)+"</button></td>";
+		table+="<td><button onclick=\"NextPage();\">></button></td>";
 	}
 	table+="</tr>";
 	$("#nav_num").html(table);

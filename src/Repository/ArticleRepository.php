@@ -105,11 +105,11 @@ class ArticleRepository extends ServiceEntityRepository
         {
             //prevoius page set
             $conn = $this->getEntityManager()->getConnection();
-            $sql = "SELECT *
+            $sql = "SELECT * FROM (SELECT *
                 FROM article a
                 WHERE id<".$fid."
                 ORDER BY id DESC
-                LIMIT ".$perPage;
+                LIMIT ".$perPage.") b ORDER BY b.id ASC";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll();
