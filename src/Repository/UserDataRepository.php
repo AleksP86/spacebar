@@ -30,6 +30,33 @@ class UserDataRepository extends ServiceEntityRepository
                 ->getResult();
     }
 
+    public function CheckUserName($v1)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT id FROM user_data WHERE name='".$v1."'";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    public function AddUser($v1, $v2, $v3)
+    {
+        if($v3=='')
+        {
+            $v3=null;
+        }
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "INSERT INTO user_data (name, password, alias) VALUES('".$v1."','".$v2."','".$v3."')";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT id from user_data WHERE name='".$v1."'";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
     public function ProfileData($id)
     {
         $conn = $this->getEntityManager()->getConnection();

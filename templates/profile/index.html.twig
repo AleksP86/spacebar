@@ -20,6 +20,14 @@
 		<div class="col-md-6" style="border:1px solid green;">
 			<p>You made so far {{ story_count }} posts</p>
 			<p>And commented on {{ comment_count }} posts</p>
+
+			<form action="doUpload" method="post" enctype="multipart/form-data">
+			    <div>
+			        <label>File to upload:</label>
+			        <input type="file" name="myfile">
+			    </div>
+			    <button type="submit">Send</button>
+			</form>
 		</div>
 	</div>
 </div>

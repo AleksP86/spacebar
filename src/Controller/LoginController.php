@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 use App\Entity\UserData;
 
 class LoginController extends AbstractController
@@ -33,7 +35,7 @@ class LoginController extends AbstractController
     /**
     * @Route("/login_check", name="login_check", methods="POST")
     */
-    public function loginCheck(EntityManagerInterface $em, Request $request/*, SessionInterface $session*/)
+    public function loginCheck(/*EntityManagerInterface $em/*, Request $request/*, SessionInterface $session*/)
     {
         $check=$this->getDoctrine()->getRepository(UserData::class)->CheckUser($_POST['un'], $_POST['up']) ;
         //dump($check);
@@ -53,6 +55,37 @@ class LoginController extends AbstractController
         else
         {
             return new JsonResponse(false);
+        }
+    }
+
+    /**
+    * @Route("/registerCheck", name="register_check", methods="POST")
+    */
+    public function registerCheck()
+    {
+        $check_user=$this->getDoctrine()->getRepository(UserData::class)->CheckUserName($_POST['un']);
+        //returns false if nothing found
+        if($check_user===false)
+        {
+            //check alias
+
+            //add user
+            $adduser = $this->getDoctrine()->getRepository(UserData::class)->AddUser($_POST['un'],$_POST['up'],$_POST['al']);
+            //check is adding executed correctly
+            //no user, insert failed returns false
+            if($adduser===false)
+            {
+                return new JsonResponse(['message'=>'Adding new user failed.']);
+            }
+            else
+            {
+                return new JsonResponse(['message'=>'New user created.']);
+            }
+        }
+        else
+        {
+            //user with same username already exists
+            return new JsonResponse(['message'=>'Username already taken.']);
         }
     }
 

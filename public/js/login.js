@@ -18,8 +18,6 @@ $("#reg_b").on('click',function(event)
 
 $( document ).ready(function()
 {
-    console.log( "ready!" );
-
     $("#loginSub").on('click',function(event)
     {
     	event.preventDefault();
@@ -40,7 +38,7 @@ $( document ).ready(function()
     		data:{un:un, up:up},
     		success: function(data)
     		{
-    			if(data)
+    			if(data===true)
                 {
                     //received true, return to welcome
                     //console.log(window.location.pathname);
@@ -59,5 +57,45 @@ $( document ).ready(function()
     	});
 
     });
+
+    $("#registerSub").on('click',function(event)
+        {
+            event.preventDefault();
+            $("#message_place_r").html("<br>");
+            let un=$('#username_r').val();
+            let up=$('#userpass_r').val();
+            let al=$('#alias_r').val();
+
+            if(un=='' || up=='')
+            {
+                $('#message_place_r').html('Missing creditenals');
+                return false;
+            }
+            if(al.length>0 && al.length<3)
+            {
+                //alias too short
+                $('#message_place_r').html('Alias is too short, pleas use at least 3 characters');
+                return false;
+            }
+
+            $.ajax(
+            {
+                url:'../registerCheck',
+                type:'POST',
+                data:{un:un, up:up, al:al},
+                success: function(data)
+                {
+                    console.log(data);
+                    if(data.message!='')
+                    {
+                        $("#message_place_r").html(data.message);
+                    }
+                },
+                error: function()
+                {
+                    console.log('ajax error');
+                }
+            });
+        });
 
 });
