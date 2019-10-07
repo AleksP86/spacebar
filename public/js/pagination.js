@@ -39,7 +39,7 @@ function FirstLoad()
 {
 	$.ajax(
 	{
-		url: '../loadFirstPage',
+		url: '../CountArticles',
 		type:'POST',
 		success: function(data)
 		{

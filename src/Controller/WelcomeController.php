@@ -127,9 +127,9 @@ class WelcomeController extends AbstractController
     }
 
     /**
-    * @Route("/loadFirstPage", name="loadFirstPage", methods="POST")
+    * @Route("/CountArticles", name="CountArticles", methods="POST")
     */
-    public function FirstPage()
+    public function CountArticles()
     {
         $count = $this->getDoctrine()->getRepository(Article::class)->CountArticles();
         return new JsonResponse(['total'=>$count['tot']]);
