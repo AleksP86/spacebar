@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+use App\Entity\Article;
+
 class PostController extends AbstractController
 {
 	public function __construct(SessionInterface $session)
@@ -18,7 +20,11 @@ class PostController extends AbstractController
     public function index($slug)
     {
     	//dump($slug);
-    	return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user')]);
+
+        //obtain article data
+        $data = $this->getDoctrine()->getRepository(UserData::class)->ArticleData($slug);
+
+    	return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
         /*return $this->render('post/index.html.twig', [
             'controller_name' => 'PostController',
         ]);*/

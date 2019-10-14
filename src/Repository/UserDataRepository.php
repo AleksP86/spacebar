@@ -70,6 +70,17 @@ class UserDataRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
+    public function UpdateAvatar($av, $id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+            UPDATE user_data
+            SET    avatar ='".$av."'
+            WHERE   id=".$id;
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+    }
+
     // /**
     //  * @return UserData[] Returns an array of UserData objects
     //  */

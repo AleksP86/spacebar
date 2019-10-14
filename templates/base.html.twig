@@ -26,7 +26,11 @@
                         {% if logged_user != null %}
                         <li class="nav-item dropdown" style="margin-right: 75px;">
                             <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    			<img class="nav-profile-img rounded-circle" src="{{ asset('images/astronaut-profile.png') }}">
+                                {% if user_avatar != null %}
+                    			    <img class="nav-profile-img rounded-circle" src="{{ user_avatar }}">
+                                {% else %}
+                                    <img class="nav-profile-img rounded-circle" src="{{ asset('images/astronaut-profile.png') }}">
+                                {% endif %}
                     		</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{{ path('profile') }}">Profile</a>

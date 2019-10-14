@@ -10,7 +10,12 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-2" style="border:1px solid green;padding:10px;">
+
+		{% if user_data['avatar']==null or user_data['avatar']=='' %}
 			<img class="rounded-circle" style="border:1px solid black;" width="100" height="100" src="{{ asset('images/astronaut-profile.png')}}">
+		{% else %}
+			<img class="rounded-circle" style="border:1px solid black;" width="100" height="100" src="{{ avatar }}">
+		{% endif %}
 		</div>
 		<div class="col-md-4" style="border:1px solid green;">
 			<p>Welcome back {{ user_data['name'] }}</p>

@@ -23,7 +23,7 @@ class WelcomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render('welcome/index.html.twig',['logged_user'=>$this->session->get('logged_user')]);
+        return $this->render('welcome/index.html.twig',['logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
 
         /*
     	$articles = $this->getDoctrine()->getRepository(Article::class)->getAllStories();

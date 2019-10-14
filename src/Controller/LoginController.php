@@ -29,7 +29,7 @@ class LoginController extends AbstractController
     public function index()
     {
         return $this->render('login/index.html.twig'
-        	, ['controller_name' => 'LoginController', 'logged_user'=>$this->session->get('logged_user')]);
+        	, ['controller_name' => 'LoginController', 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
     }
 
     /**
@@ -46,9 +46,12 @@ class LoginController extends AbstractController
         {
             $this->session->set('logged_user', $check[0]->getAlias());
             $this->session->set('logged_user_id', $check[0]->getId());
+            $this->session->set('user_avatar', "/uploads/".$check[0]->getAvatar());
 
-            //dump($session->get('logged_user') );
-
+            /*
+            dump($this->session->get('logged_user') );
+            dump($this->session->get('user_avatar') );
+            */
             //$session->set('logged_user_id',$check[0]->getId() );
             return new JsonResponse(true);
         }
@@ -96,6 +99,7 @@ class LoginController extends AbstractController
     {
         $this->session->remove('logged_user');
         $this->session->remove('logged_user_id');
+        $this->session->remove('user_avatar');
 
         return $this->redirectToRoute('welcome');
     }
