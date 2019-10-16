@@ -28,11 +28,21 @@ class ProfileController extends AbstractController
     	
     	/*dump($user_d);
     	dump($story_count);*/
-        
-        return $this->render('profile/index.html.twig', [
+        if( file_exists($this->session->get('user_avatar') ) )
+        {
+            return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController', 'logged_user'=>$this->session->get('logged_user')
             , 'user_data'=>$user_d[0], 'story_count'=>$story_count['stories'], 'comment_count'=>$comment_count
             , 'avatar'=>"/uploads/".$user_d[0]['avatar'], 'user_avatar'=>$this->session->get('user_avatar')
         ]);
+        }
+        else
+        {
+            return $this->render('profile/index.html.twig', [
+            'controller_name' => 'ProfileController', 'logged_user'=>$this->session->get('logged_user')
+            , 'user_data'=>$user_d[0], 'story_count'=>$story_count['stories'], 'comment_count'=>$comment_count
+            , 'avatar'=>"/uploads/".$user_d[0]['avatar'], 'user_avatar'=>false
+        ]);
+        }
     }
 }

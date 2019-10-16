@@ -40,6 +40,7 @@ class UploadController extends AbstractController
         $filename = $file->getClientOriginalName();
         $uploader->upload($uploadDir, $file, $filename);
         $this->getDoctrine()->getRepository(UserData::class)->UpdateAvatar($filename, $session->get('logged_user_id'));
+        $session->set('user_avatar', "/uploads/".$filename);
 
         return $this->redirectToRoute('profile');
 

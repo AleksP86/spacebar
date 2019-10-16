@@ -24,10 +24,14 @@ class PostController extends AbstractController
         //obtain article data
         $data = $this->getDoctrine()->getRepository(UserData::class)->ArticleData($slug);
 
-    	return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
-        /*return $this->render('post/index.html.twig', [
-            'controller_name' => 'PostController',
-        ]);*/
+        if( file_exists($this->session->get('user_avatar') ) )
+        {
+            return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
+        }
+        else
+        {
+            return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>false]);
+        }
     }
 
 }

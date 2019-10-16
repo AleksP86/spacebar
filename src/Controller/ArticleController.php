@@ -36,9 +36,18 @@ class ArticleController extends AbstractController
      */
     public function indexAdd()
     {
-        return $this->render('posting/index.html.twig', [
+        if( file_exists($this->session->get('user_avatar') ) )
+        {
+            return $this->render('posting/index.html.twig', [
             'controller_name' => 'ArticleController', 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')
         ]);
+        }
+        else
+        {
+            return $this->render('posting/index.html.twig', [
+            'controller_name' => 'ArticleController', 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>false
+        ]);
+        }
     }
 
     /**

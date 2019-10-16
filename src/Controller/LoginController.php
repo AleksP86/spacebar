@@ -28,8 +28,16 @@ class LoginController extends AbstractController
      */
     public function index()
     {
-        return $this->render('login/index.html.twig'
-        	, ['controller_name' => 'LoginController', 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
+        if( file_exists($this->session->get('user_avatar') ) )
+        {
+            return $this->render('login/index.html.twig'
+            , ['controller_name' => 'LoginController', 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
+        }
+        else
+        {
+            return $this->render('login/index.html.twig'
+            , ['controller_name' => 'LoginController', 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>false]);
+        }
     }
 
     /**
@@ -46,7 +54,7 @@ class LoginController extends AbstractController
         {
             $this->session->set('logged_user', $check[0]->getAlias());
             $this->session->set('logged_user_id', $check[0]->getId());
-            $this->session->set('user_avatar', "/uploads/".$check[0]->getAvatar());
+            $this->session->set('user_avatar', "uploads/".$check[0]->getAvatar());
 
             /*
             dump($this->session->get('logged_user') );
