@@ -115,4 +115,16 @@ class ArticleRepository extends ServiceEntityRepository
             return $stmt->fetchAll();
         }
     }
+
+    public function ArticleData($id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT a.name as 'title', a.text, a.added_at as 'date_add'
+                , u.name as 'author_name', u.alias as 'author_alias'
+                , u.avatar as 'picture' from article a, user_data u 
+                WHERE a.id=".$id." AND a.author=u.id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 }

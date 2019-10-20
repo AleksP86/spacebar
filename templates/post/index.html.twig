@@ -10,5 +10,19 @@
 
 <div >
 	<p>Page for article {{ post_id }}</p>
+	{{ dump(data) }}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-1" style="border:1px solid green;padding:10px;">
+				<img class="rounded-circle" style="border:1px solid black;" width="100" height="100" src="{{ asset('images/astronaut-profile.png')}}">
+			</div>
+			<div class="col-md-6" style="border:1px solid green;">
+				{{ data.title }}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12" style="border:1px solid green;">
+		{{ data.text }}
+	</div>
 </div>
 {% endblock %}

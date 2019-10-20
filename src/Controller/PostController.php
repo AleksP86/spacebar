@@ -19,19 +19,48 @@ class PostController extends AbstractController
      */
     public function index($slug)
     {
-    	//dump($slug);
+        //dump($slug);
+        //return $this->redirectToRoute('invalidArticle');
+        //dump(is_numeric($slug));
+        //exit();
 
-        //obtain article data
-        $data = $this->getDoctrine()->getRepository(UserData::class)->ArticleData($slug);
-
-        if( file_exists($this->session->get('user_avatar') ) )
+        if(is_numeric($slug))
         {
-            return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
+            //request article data
+            $data = $this->getDoctrine()->getRepository(Article::class)->ArticleData($slug);
+            //dump($data);
         }
         else
         {
-            return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>false]);
+            //invalid indentifier
+            //give empty page
+            return $this->redirectToRoute('invalidArticle');
         }
+
+        if( file_exists($this->session->get('user_avatar') ) )
+        {
+            return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar'), 'data'=>$data]);
+        }
+        else
+        {
+            return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>false, 'data'=>$data]);
+        }
+    }
+
+    /**
+     * @Route("/post_error", name="invalidArticle")
+     */
+    public function InvalidArticle()
+    {
+        if( file_exists($this->session->get('user_avatar') ) )
+        {
+            return $this->render('errors/invalid_article.html.twig',['logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar')]);
+        }
+        else
+        {
+            return $this->render('errors/invalid_article.html.twig',['logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>false]);
+        }
+        
     }
 
 }
