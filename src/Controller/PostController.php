@@ -15,7 +15,7 @@ class PostController extends AbstractController
         $this->session = $session;
     }
     /**
-     * @Route("/post/{slug}", name="post")
+     * @Route("/post/{slug}", name="post", requirements={"slug"="\d+"})
      */
     public function index($slug)
     {
@@ -24,6 +24,8 @@ class PostController extends AbstractController
         //dump(is_numeric($slug));
         //exit();
 
+        /*
+        //not needed any more requirement is set for slug to numbers only
         if(is_numeric($slug))
         {
             //request article data
@@ -35,11 +37,17 @@ class PostController extends AbstractController
             //invalid indentifier
             //give empty page
             return $this->redirectToRoute('invalidArticle');
+        }*/
+
+        $data = $this->getDoctrine()->getRepository(Article::class)->ArticleData($slug);
+        if(!$data || $data==null)
+        {
+            return $this->redirectToRoute('invalidArticle');
         }
 
         if( file_exists($this->session->get('user_avatar') ) )
         {
-            return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>$this->session->get('user_avatar'), 'data'=>$data]);
+            return $this->render('post/index.html.twig',['post_id'=>$slug, 'logged_user'=>$this->session->get('logged_user'), 'user_avatar'=>'/'.$this->session->get('user_avatar'), 'data'=>$data]);
         }
         else
         {
@@ -48,7 +56,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/post_error", name="invalidArticle")
+     * @Route("/post/error", name="invalidArticle")
      */
     public function InvalidArticle()
     {
